@@ -1,16 +1,34 @@
-// const tasks = [
-//   { id: 1, description: "Ir al gym", done: false },
-//   { id: 2, description: "Leer", done: false },
-//   { id: 3, description: "Programar", done: false },
-// ];
+const tasks = [
+  { id: 0, description: "Ir al gym", done: false },
+  { id: 1, description: "Leer", done: false },
+  { id: 2, description: "Programar", done: false },
+];
 const taskList = document.querySelector(".tasks");
 const taskInput = document.querySelector("#taskDesc");
 const addTask = document.querySelector("#addTask");
-const tasks = [];
 const taskHeader = "<tr><th>ID</th><th>Tarea</th></tr>";
+const taskCounter = document.querySelector("#taskCounter");
+let id = tasks.length;
+
+function renderTasks() {
+  let htmlCode = "";
+  for (let task of tasks) {
+    htmlCode += ` <tr>
+    <td>${task.id}</td>
+    <td>${task.description}</td>
+    <td><input type="checkbox" id="cbox" /></td>
+    <td class="deleteTaskIcon">
+    <i onclick="deleteTask(${task.id})" class="fa-solid fa-x deleteTaskIcon"></i>
+    </td>
+  </tr>`;
+    id = tasks.length;
+  }
+  taskList.innerHTML = taskHeader + htmlCode;
+  taskCounter.innerHTML = tasks.length;
+}
 
 addTask.addEventListener("click", () => {
-  const newTask = taskInput.value;
+  newTask = { id: id, description: taskInput.value, done: false };
   console.log(newTask);
   tasks.push(newTask);
   taskInput.value = "";
@@ -18,16 +36,24 @@ addTask.addEventListener("click", () => {
   let htmlCode = "";
   for (let task of tasks) {
     htmlCode += ` <tr>
-    <td>${Date.now()}</td>
-    <td>${task}</td>
+    <td>${task.id}</td>
+    <td>${task.description}</td>
     <td><input type="checkbox" id="cbox" /></td>
     <td class="deleteTaskIcon">
-      <i class="fa-solid fa-x deleteTaskIcon"></i>
+    <i onclick="deleteTask(${task.id})" class="fa-solid fa-x deleteTaskIcon"></i>
     </td>
   </tr>`;
+    id = tasks.length;
   }
   taskList.innerHTML = taskHeader + htmlCode;
+  taskCounter.innerHTML = tasks.length;
 });
+
+function deleteTask(id) {
+  const index = tasks.findIndex((ele) => ele.id == id);
+  tasks.splice(index, 1);
+  renderTasks();
+}
 
 // // Crear un botón de eliminación y adjuntarlo a cada item de la lista
 // const myNodelist = document.getElementsByTagName("li");
