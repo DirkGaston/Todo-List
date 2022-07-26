@@ -1,7 +1,7 @@
 const tasks = [
-  { id: 0, description: "Ir al gym", done: false, isChecked: false },
-  { id: 1, description: "Leer", done: false, isChecked: false },
-  { id: 2, description: "Programar", done: false, isChecked: false },
+  { id: 0, description: "Ir al gym", done: false },
+  { id: 1, description: "Leer", done: false },
+  { id: 2, description: "Programar", done: false },
 ];
 const taskList = document.querySelector(".tasks");
 const taskInput = document.querySelector("#taskDesc");
@@ -13,10 +13,10 @@ let id = tasks.length;
 let htmlCode = "";
 
 const template = (task) => {
-  return `<tr class="taskRow">
+  return ` <tr>
   <td>${task.id}</td>
-  <td>${task.description}</td>
-  <td><input type="checkbox" id="cbox${task.id}" onclick="checkTask(${task.id})" checked="${task.isChecked}" /></td>
+  <td id="${task.id}">${task.description}</td>
+  <td><input type="checkbox" id="cbox${task.id}" onclick="checkTask(${task.id})" /></td>
   <td class="deleteTaskIcon">
   <i onclick="deleteTask(${task.id})" class="fa-solid fa-x deleteTaskIcon"></i>
   </td>
