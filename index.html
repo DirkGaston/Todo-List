@@ -1,43 +1,42 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Todo List</title>
-    <link
-      rel="stylesheet"
-      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css"
-      integrity="sha512-KfkfwYDsLkIlwQp6LFnl8zNdLGxu9YAA1QvwINks4PhcElQSvqcyVLLD9aMhXd13uQjoXtEKNosOWaZqXgel0g=="
-      crossorigin="anonymous"
-      referrerpolicy="no-referrer"
-    />
-    <link rel="stylesheet" href="/assets/css/style.css" />
-  </head>
-  <body>
-    <h1>Mi Lista To Do</h1>
-    <hr />
-    <div class="container">
-      <div class="formContainer">
-        <form>
-          <label for="taskDesc">Nueva tarea</label>
-          <input type="text" id="taskDesc" name="task" />
-        </form>
-        <button id="addTask">Agregar</button>
-      </div>
 
-      <div class="counterContainer">
-        <p class="totalTasks">Total: <span id="taskCounter">0</span></p>
-        <p class="doneTasks">Realizadas: <span id="doneCounter">0</span></p>
-      </div>
-      <table class="tasks">
-        <tr class="taskTableHeader">
-          <th>ID</th>
-          <th>Tarea</th>
-        </tr>
-      </table>
+<head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Todo List</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css"
+    integrity="sha512-KfkfwYDsLkIlwQp6LFnl8zNdLGxu9YAA1QvwINks4PhcElQSvqcyVLLD9aMhXd13uQjoXtEKNosOWaZqXgel0g=="
+    crossorigin="anonymous" referrerpolicy="no-referrer" />
+  <link rel="stylesheet" href="/assets/css/style.css" />
+</head>
+
+<body>
+  <h1>Mi Lista To Do</h1>
+  <hr />
+  <div class="container">
+    <div class="formContainer">
+      <form>
+        <label for="taskDesc">Nueva tarea</label>
+        <input type="text" id="taskDesc" name="task" />
+      </form>
+      <button id="addTask">Agregar</button>
     </div>
 
-    <script src="/assets/js/script.js"></script>
-  </body>
+    <div class="counterContainer">
+      <p class="totalTasks">Total: <span id="taskCounter">0</span></p>
+      <p class="doneTasks">Realizadas: <span id="doneCounter">0</span></p>
+    </div>
+    <table class="tasks">
+      <tr class="taskTableHeader">
+        <th>ID</th>
+        <th>Tarea</th>
+      </tr>
+    </table>
+  </div>
+
+  <script type="module" src="/assets/js/script.js"></script>
+</body>
+
 </html>

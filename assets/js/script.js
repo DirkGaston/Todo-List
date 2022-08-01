@@ -1,90 +1,111 @@
-const tasks = [
-  { id: 0, description: "Ir al gym", done: false },
-  { id: 1, description: "Leer", done: false },
-  { id: 2, description: "Programar", done: false },
-];
+import { tasks } from "./tasks.js"
 const taskList = document.querySelector(".tasks");
-const taskInput = document.querySelector("#taskDesc");
-const addTask = document.querySelector("#addTask");
-const taskHeader = "<tr><th>ID</th><th>Tarea</th></tr>";
 const taskCounter = document.querySelector("#taskCounter");
 const doneCounter = document.querySelector("#doneCounter");
-let id = tasks.length;
 let htmlCode = "";
+let id = tasks.length;
+const addTask = document.querySelector("#addTask");
+let taskDone = "";
+const taskInput = document.querySelector("#taskDesc");
+const taskHeader = "<tr><th>ID</th><th>Tarea</th></tr>";
 
-const template = (task) => {
-  return ` <tr>
-  <td>${task.id}</td>
-  <td id="${task.id}">${task.description}</td>
-  <td><input type="checkbox" id="cbox${task.id}" onclick="checkTask(${task.id})" /></td>
+const filterDone = () => {
+  doneCounter.innerHTML = tasks.filter(({ done }) => done === true).length;
+
+}
+
+const template = (htmlId, htmlDesc, htmlState) => {
+  htmlCode += ` <tr>
+  <td>${htmlId}</td>
+  <td id="${htmlId}">${htmlDesc}</td>
+  <td><input class="taskCheck" id="c${htmlId}" type="checkbox" value="true" ${htmlState} /></td>
   <td class="deleteTaskIcon">
-  <i onclick="deleteTask(${task.id})" class="fa-solid fa-x deleteTaskIcon"></i>
+  <i id="${htmlId}" class="fa-solid fa-x deleteTaskIcon"></i>
   </td>
 </tr>`;
 };
 
-const pageLoad = () => {
-  for (const task of tasks) {
-    htmlCode += template(task);
+const pageLoad = (taskId, taskDesc, taskState) => {
+  taskDone = ""
+  if (taskState === true) {
+    taskDone = "checked"
+  } else taskDone === ""
+  if (taskId >= id) {
+    id = taskId + 1
   }
-  taskList.innerHTML = taskHeader + htmlCode;
-  taskCounter.innerHTML = tasks.length;
-  filterDone();
+  template(taskId, taskDesc, taskDone)
 };
 
-function renderTasks() {
-  let htmlCode = "";
+const renderTasks = () => {
+  htmlCode = "";
+  id = tasks.length
   for (let task of tasks) {
-    htmlCode += template(task);
-    id = tasks.length;
+    pageLoad(task.id, task.description, task.done)
   }
   taskList.innerHTML = taskHeader + htmlCode;
   taskCounter.innerHTML = tasks.length;
   filterDone();
+}
+
+const newTask = () => {
+  if (taskInput.value === "") {
+    alert("¡Ingresa una tarea!")
+    return
+  } else {
+    tasks.push({ id: id, description: taskInput.value, done: false });
+    taskInput.value = ""
+    renderTasks()
+    taskCheck()
+    taskCheckDone()
+  }
 }
 
 addTask.addEventListener("click", () => {
-  newTask = { id: id, description: taskInput.value, done: false };
-  tasks.push(newTask);
-  taskInput.value = "";
+  newTask()
+})
 
-  let htmlCode = "";
-  for (let task of tasks) {
-    htmlCode += template(task);
-    id = tasks.length;
-  }
-  taskList.innerHTML = taskHeader + htmlCode;
-  taskCounter.innerHTML = tasks.length;
-  filterDone();
-});
+const taskCheck = () => {
+  document.querySelectorAll('i').forEach((item) => {
+    item.addEventListener('click', (e) => {
+      deleteTask(e.target.id)
+    })
+  })
+}
+
+const taskCheckDone = () => {
+  document.querySelectorAll('.taskCheck').forEach((item) => {
+
+    item.addEventListener('click', (e) => {
+      let itemId = Number(e.target.id.slice(1))
+      let taskToStrikeThrough = document.getElementById(itemId);
+      const taskIndex = tasks.findIndex(
+        (taskItems) => taskItems.id == itemId
+      )
+      if (e.target.checked) {
+        tasks[taskIndex].done = true
+        taskToStrikeThrough.innerHTML =
+          "<strike>" + taskToStrikeThrough.innerHTML + "</strike>";
+      } else {
+        tasks[taskIndex].done = false
+        taskToStrikeThrough.innerHTML =
+          taskToStrikeThrough.innerHTML;
+      }
+      filterDone()
+    })
+  })
+}
 
 function deleteTask(id) {
-  const index = tasks.findIndex((ele) => ele.id == id);
-  tasks.splice(index, 1);
-  renderTasks();
+  const taskIndex = tasks.findIndex(
+    (taskItems) => taskItems.id == id
+  )
+  tasks.splice(taskIndex, 1)
+  renderTasks()
+  taskCheck()
+  taskCheckDone()
 }
 
-function checkTask(id) {
-  const index = tasks.findIndex((ele) => ele.id == id);
-  let checkbox = document.querySelector("#cbox" + id);
-  if (checkbox.checked == true) {
-    tasks[index].done = true;
-  } else {
-    tasks[index].done = false;
-  }
-  let taskToStrikeThrough = document.getElementById(id);
-  taskToStrikeThrough.innerHTML =
-    "<strike>" + taskToStrikeThrough.innerHTML + "</strike>";
+renderTasks()
+taskCheck()
+taskCheckDone()
 
-  filterDone();
-}
-
-function filterDone() {
-  let doneTasks = tasks.filter((task) => task.done == true);
-  let totalDoneTasks = doneTasks.length;
-  doneCounter.innerHTML = totalDoneTasks;
-}
-
-window.onload = function () {
-  pageLoad();
-};
