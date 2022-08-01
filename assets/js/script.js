@@ -17,7 +17,7 @@ const filterDone = () => {
 const template = (htmlId, htmlDesc, htmlState) => {
   htmlCode += ` <tr>
   <td>${htmlId}</td>
-  <td id="${htmlId}">${htmlDesc}</td>
+  <td class="taskDescription" id="${htmlId}">${htmlDesc}</td>
   <td><input class="taskCheck" id="c${htmlId}" type="checkbox" value="true" ${htmlState} /></td>
   <td class="deleteTaskIcon">
   <i id="${htmlId}" class="fa-solid fa-x deleteTaskIcon"></i>
@@ -29,7 +29,9 @@ const pageLoad = (taskId, taskDesc, taskState) => {
   taskDone = ""
   if (taskState === true) {
     taskDone = "checked"
-  } else taskDone === ""
+  } else {
+    taskDone === ""
+  }
   if (taskId >= id) {
     id = taskId + 1
   }
@@ -87,8 +89,6 @@ const taskCheckDone = () => {
           "<strike>" + taskToStrikeThrough.innerHTML + "</strike>";
       } else {
         tasks[taskIndex].done = false
-        taskToStrikeThrough.innerHTML =
-          taskToStrikeThrough.innerHTML;
       }
       filterDone()
     })
@@ -105,7 +105,10 @@ function deleteTask(id) {
   taskCheckDone()
 }
 
-renderTasks()
-taskCheck()
-taskCheckDone()
+window.onload = () => {
+  renderTasks()
+  taskCheck()
+  taskCheckDone()
+}
+
 

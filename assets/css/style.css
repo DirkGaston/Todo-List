@@ -114,6 +114,21 @@ span {
   border-collapse: collapse;
   width: 100%;
 }
+
 .taskTableHeader {
   padding-bottom: 200px;
+}
+
+tr:nth-child(odd) {
+  background: #f9f9f9;
+}
+
+tr:hover {
+  background: #ddd;
+}
+
+tr td.done {
+  background: #888;
+  color: #fff;
+  text-decoration: line-through;
 }
