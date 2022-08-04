@@ -1,4 +1,4 @@
-import { tasks } from "./tasks.js"
+import { tasks } from "./tasks.js";
 const taskList = document.querySelector(".tasks");
 const taskCounter = document.querySelector("#taskCounter");
 const doneCounter = document.querySelector("#doneCounter");
@@ -8,11 +8,11 @@ const addTask = document.querySelector("#addTask");
 let taskDone = "";
 const taskInput = document.querySelector("#taskDesc");
 const taskHeader = "<tr><th>ID</th><th>Tarea</th></tr>";
+const tasksToStrikeThrough = [];
 
 const filterDone = () => {
   doneCounter.innerHTML = tasks.filter(({ done }) => done === true).length;
-
-}
+};
 
 const template = (htmlId, htmlDesc, htmlState) => {
   htmlCode += ` <tr>
@@ -26,89 +26,97 @@ const template = (htmlId, htmlDesc, htmlState) => {
 };
 
 const pageLoad = (taskId, taskDesc, taskState) => {
-  taskDone = ""
+  taskDone = "";
+  let taskToStrikeThrough = document.getElementById(taskId);
+
   if (taskState === true) {
-    taskDone = "checked"
+    taskDone = "checked";
+    taskToStrikeThrough.innerHTML =
+      "<strike>" + taskToStrikeThrough.innerHTML + "</strike>";
   } else {
-    taskDone === ""
+    taskDone === "";
   }
   if (taskId >= id) {
-    id = taskId + 1
+    id = taskId + 1;
   }
-  template(taskId, taskDesc, taskDone)
+  template(taskId, taskDesc, taskDone);
 };
 
 const renderTasks = () => {
   htmlCode = "";
-  id = tasks.length
+  id = tasks.length;
   for (let task of tasks) {
-    pageLoad(task.id, task.description, task.done)
+    pageLoad(task.id, task.description, task.done);
   }
   taskList.innerHTML = taskHeader + htmlCode;
   taskCounter.innerHTML = tasks.length;
   filterDone();
-}
+  strikeThrough();
+};
 
 const newTask = () => {
   if (taskInput.value === "") {
-    alert("¡Ingresa una tarea!")
-    return
+    alert("¡Ingresa una tarea!");
+    return;
   } else {
     tasks.push({ id: id, description: taskInput.value, done: false });
-    taskInput.value = ""
-    renderTasks()
-    taskCheck()
-    taskCheckDone()
+    taskInput.value = "";
+    renderTasks();
+    taskCheck();
+    taskCheckDone();
   }
-}
+};
 
 addTask.addEventListener("click", () => {
-  newTask()
-})
+  newTask();
+});
 
 const taskCheck = () => {
-  document.querySelectorAll('i').forEach((item) => {
-    item.addEventListener('click', (e) => {
-      deleteTask(e.target.id)
-    })
-  })
-}
+  document.querySelectorAll("i").forEach((item) => {
+    item.addEventListener("click", (e) => {
+      deleteTask(e.target.id);
+    });
+  });
+};
 
 const taskCheckDone = () => {
-  document.querySelectorAll('.taskCheck').forEach((item) => {
-
-    item.addEventListener('click', (e) => {
-      let itemId = Number(e.target.id.slice(1))
+  document.querySelectorAll(".taskCheck").forEach((item) => {
+    item.addEventListener("click", (e) => {
+      let itemId = Number(e.target.id.slice(1));
       let taskToStrikeThrough = document.getElementById(itemId);
-      const taskIndex = tasks.findIndex(
-        (taskItems) => taskItems.id == itemId
-      )
+      const taskIndex = tasks.findIndex((taskItems) => taskItems.id == itemId);
       if (e.target.checked) {
-        tasks[taskIndex].done = true
+        tasks[taskIndex].done = true;
         taskToStrikeThrough.innerHTML =
           "<strike>" + taskToStrikeThrough.innerHTML + "</strike>";
+        tasksToStrikeThrough.push(itemId);
+        console.log(tasksToStrikeThrough);
       } else {
-        tasks[taskIndex].done = false
+        tasks[taskIndex].done = false;
       }
-      filterDone()
-    })
-  })
-}
+      filterDone();
+    });
+  });
+};
+
+const strikeThrough = () => {
+  tasksToStrikeThrough.forEach((id) => {
+    let taskToStrikeThrough = document.getElementById(id);
+    taskToStrikeThrough.innerHTML =
+      "<strike>" + taskToStrikeThrough.innerHTML + "</strike>";
+  });
+};
 
 function deleteTask(id) {
-  const taskIndex = tasks.findIndex(
-    (taskItems) => taskItems.id == id
-  )
-  tasks.splice(taskIndex, 1)
-  renderTasks()
-  taskCheck()
-  taskCheckDone()
+  const taskIndex = tasks.findIndex((taskItems) => taskItems.id == id);
+  tasks.splice(taskIndex, 1);
+  renderTasks();
+  taskCheck();
+  taskCheckDone();
 }
 
 window.onload = () => {
-  renderTasks()
-  taskCheck()
-  taskCheckDone()
-}
-
-
+  renderTasks();
+  taskCheck();
+  taskCheckDone();
+};
